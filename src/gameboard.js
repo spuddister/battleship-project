@@ -1,53 +1,180 @@
 const ship = require("./ship");
 
 function gameboardBuilder() {
-  const startingShipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+  const defaultShipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
   let playerShips = [];
-  let compShips = [];
+
   let seaLayout = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
+    [
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+      "empty",
+    ],
   ];
 
-  for (let i = 0; i < startingShipLengths.length; i++) {
-    playerShips[i] = ship(startingShipLengths[i]);
-    compShips[i] = ship(startingShipLengths[i]);
+  //temporarily assigning ship locations for codings sake
+  const tempShipLocations = [];
+  for (let i = 0; i < 10; i++) {
+    tempShipLocations[i] = [
+      [i, 0],
+      [i, defaultShipLengths[i] - 1],
+    ];
   }
 
-  const placeShip = (start, end) => {
-    seaLayout[start[0]][start[1]] = 1;
-    seaLayout[end[0]][end[1]] = 1;
+  //create ships and assign them coordinates from the temp locations
+  //update the seaLayout to track where all ships are located
+  for (let i = 0; i < tempShipLocations.length; i++) {
+    playerShips[i] = ship(tempShipLocations[i][0], tempShipLocations[i][1]);
+    playerShips[i].coordinates.forEach((coord) => {
+      seaLayout[coord[0]][coord[1]] = "ship";
+    });
+  }
 
-    //check for direction of ship
-    if (start[0] === end[0]) {
-      let vert = start[1] + 1;
-      while (vert < end[1]) {
-        seaLayout[start[0]][vert] = 1;
-        vert++;
+  const receiveAttack = (x, y) => {
+    if (seaLayout[x][y] === "ship") {
+      seaLayout[x][y] = "hit";
+      let shipIndex = indentifyShip(x,y);
+      if (playerShips[shipIndex].isSunk()) {
+        sunkenShip();
       }
+      return "hit";
     } else {
-      let hor = start[0] + 1;
-      while (hor < end[0]) {
-        seaLayout[hor][start[0]] = 1;
-        hor++;
-      }
+      seaLayout[x][y] = "miss";
+      return "miss";
     }
-    return seaLayout;
   };
+
+  const indentifyShip = (x,y)=>{
+    playerShips.forEach(ship=>{
+      if (ship.coordinates.includes([x,y])) {
+        return playerShips.indexOf(ship)
+      }
+    })
+  };
+
+  const sunkenShip = 
 
   return {
     playerShips,
-    compShips,
-    placeShip,
+    receiveAttack,
   };
 }
 
 module.exports = gameboardBuilder;
+
+//hit miss ship empty
