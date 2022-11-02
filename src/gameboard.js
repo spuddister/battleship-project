@@ -148,10 +148,10 @@ function gameboardBuilder() {
   const receiveAttack = (x, y) => {
     if (seaLayout[x][y] === "ship") {
       seaLayout[x][y] = "hit";
-      let shipIndex = indentifyShip(x,y);
-      if (playerShips[shipIndex].isSunk()) {
-        sunkenShip();
-      }
+      // let shipIndex = indentifyShip(x, y);
+      // if (playerShips[shipIndex].isSunk()) {
+      //   sunkenShip();
+      // }
       return "hit";
     } else {
       seaLayout[x][y] = "miss";
@@ -159,15 +159,15 @@ function gameboardBuilder() {
     }
   };
 
-  const indentifyShip = (x,y)=>{
-    playerShips.forEach(ship=>{
-      if (ship.coordinates.includes([x,y])) {
-        return playerShips.indexOf(ship)
+  const indentifyShip = (x, y) => {
+    playerShips.forEach((ship) => {
+      if (ship.coordinates.includes([x, y])) {
+        return playerShips.indexOf(ship);
       }
-    })
+    });
   };
 
-  const sunkenShip = 
+  // const sunkenShip =
 
   return {
     playerShips,
