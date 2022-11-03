@@ -4,7 +4,6 @@ function ship(start, end) {
 
   //check if ship is 1 square
   if (start[0] === end[0] && start[1] === end[1]) {
-    coordinates.push(end);
     length = 1;
   }
   //check for direction of ship
@@ -14,6 +13,7 @@ function ship(start, end) {
       coordinates.push([start[0], vert]);
       vert++;
     }
+    console.log("else if"); //length bug found for single tile ships
     length = end[1] - start[1] + 1;
   } else {
     let hor = start[0] + 1;
@@ -21,6 +21,7 @@ function ship(start, end) {
       coordinates.push([hor, start[1]]);
       hor++;
     }
+    console.log("else");
     length = end[0] - start[0] + 1;
   }
 

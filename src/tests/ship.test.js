@@ -19,3 +19,10 @@ it("Ship sinking test", () => {
   ship1.hit();
   expect(ship1.isSunk()).toBe(true);
 });
+
+it.only("Single tile ship test", () => {
+  const ship1 = ship([9, 9], [9, 9]);
+  ship1.hit();
+  expect(ship1.isSunk()).toBe(true);
+  expect(ship.length).toStrictEqual(1);
+});
