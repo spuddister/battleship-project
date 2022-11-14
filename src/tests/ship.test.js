@@ -18,11 +18,12 @@ it("Ship sinking test", () => {
   ship1.hit();
   ship1.hit();
   expect(ship1.isSunk()).toBe(true);
+  expect(ship.length).toStrictEqual(2);
 });
 
-it.only("Single tile ship test", () => {
+it("Single tile ship test", () => {
   const ship1 = ship([9, 9], [9, 9]);
   ship1.hit();
   expect(ship1.isSunk()).toBe(true);
-  expect(ship.length).toStrictEqual(1);
+  expect(ship1.length).toStrictEqual(1);
 });

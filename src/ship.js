@@ -8,20 +8,18 @@ function ship(start, end) {
   }
   //check for direction of ship
   else if (start[0] === end[0]) {
-    let vert = start[1] + 1;
-    while (vert <= end[1]) {
-      coordinates.push([start[0], vert]);
-      vert++;
+    let vertical = start[1] + 1;
+    while (vertical <= end[1]) {
+      coordinates.push([start[0], vertical]);
+      vertical++;
     }
-    console.log("else if"); //length bug found for single tile ships
     length = end[1] - start[1] + 1;
   } else {
-    let hor = start[0] + 1;
-    while (hor <= end[0]) {
-      coordinates.push([hor, start[1]]);
-      hor++;
+    let horizontal = start[0] + 1;
+    while (horizontal <= end[0]) {
+      coordinates.push([horizontal, start[1]]);
+      horizontal++;
     }
-    console.log("else");
     length = end[0] - start[0] + 1;
   }
 

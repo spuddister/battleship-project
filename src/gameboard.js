@@ -5,126 +5,16 @@ function gameboardBuilder() {
   let playerShips = [];
 
   let seaLayout = [
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
-    [
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-      "empty",
-    ],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
+    [, , , , , , , , , ,],
   ];
 
   //temporarily assigning ship locations for codings sake
@@ -141,19 +31,18 @@ function gameboardBuilder() {
   for (let i = 0; i < tempShipLocations.length; i++) {
     playerShips[i] = ship(tempShipLocations[i][0], tempShipLocations[i][1]);
     playerShips[i].coordinates.forEach((coord) => {
-      seaLayout[coord[0]][coord[1]] = "ship";
+      seaLayout[coord[0]][coord[1]] = playerShips[i];
     });
   }
 
   const receiveAttack = (x, y) => {
-    if (seaLayout[x][y] === "ship") {
+    if (seaLayout[x][y] !== undefined) {
+      let vessel = seaLayout[x][y];
+      vessel.hit();
       seaLayout[x][y] = "hit";
-      let vessel = indentifyShipAt(x, y);
-      // console.log()
-      if (vessel.isSunk()) sunkenShip(vessel.coordinates);
+      if (vessel.isSunk()) sunkenShip(vessel);
       return "hit";
     } else {
-      seaLayout[x][y] = "miss";
       return "miss";
     }
   };
@@ -169,8 +58,8 @@ function gameboardBuilder() {
     }
   };
 
-  const sunkenShip = (coords) => {
-    console.log(coords);
+  const sunkenShip = (vessel) => {
+    console.log("Sunk: " + vessel.coordinates);
   };
 
   return {
