@@ -41,6 +41,7 @@ function gameboardBuilder() {
       seaLayout[x][y] = "hit";
       return "hit";
     } else {
+      seaLayout[x][y] = "miss";
       return "miss";
     }
   };
@@ -52,10 +53,15 @@ function gameboardBuilder() {
     return true;
   };
 
+  const checkSpace = (x, y) => {
+    return seaLayout[x][y];
+  };
+
   return {
     playerShips,
     receiveAttack,
     allShipsSunk,
+    checkSpace,
   };
 }
 
