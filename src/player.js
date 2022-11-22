@@ -20,7 +20,7 @@ const playerBuilder = () => {
     gameboard: gameboardBuilder(),
     turn: true,
     attack: (x, y) => {
-      computer.gameboard.receiveAttack(x, y);
+      return computer.gameboard.receiveAttack(x, y);
     },
   };
   const computer = {
