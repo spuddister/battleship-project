@@ -65,10 +65,22 @@ header {
 .player-tile {
 }
 
-.comp-tile {
+.clickable-tile {
   cursor: pointer;
 }
 
-.comp-tile:hover {
+.clickable-tile:hover {
   background-color: rgb(148, 210, 238);
+}
+
+.start-btn-wrapper {
+  padding: 10px;
+}
+
+.start-btn {
+}
+
+.start-hidden {
+  /* opacity: 0; */
+  background-color: blue;
 }
