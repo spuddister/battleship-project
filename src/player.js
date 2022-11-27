@@ -28,10 +28,19 @@ const playerBuilder = () => {
     turn: false,
     attackList: [],
     attack: () => {
-      let attackCoords = computerAttackLogic();
+      const attackCoords = computerAttackLogic();
       computer.attackList.push(attackCoords);
-      player.gameboard.receiveAttack(...attackCoords);
-      return attackCoords;
+      const result = player.gameboard.receiveAttack(...attackCoords);
+
+      let xComp = attackCoords[0];
+      let yComp = attackCoords[1];
+      let tileNum;
+      if (xComp === 0) {
+        tileNum = yComp.toString();
+      } else {
+        tileNum = xComp.toString() + yComp.toString();
+      }
+      return [tileNum, result];
     },
   };
 

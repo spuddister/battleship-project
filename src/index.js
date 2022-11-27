@@ -37,20 +37,42 @@ const gameLoop = (e) => {
 
   //Get coordinates of the tile clicked from the tile-number, tile#96 has coordinates [6,9]
   let tileNum = e.target.getAttribute("tile-num");
-  let x;
-  let y;
+  let xPlayer;
+  let yPlayer;
   if (tileNum.length === 1) {
-    y = 0;
-    x = tileNum;
+    yPlayer = 0;
+    xPlayer = tileNum;
   } else {
-    y = tileNum[0];
-    x = tileNum[1];
+    yPlayer = tileNum[0];
+    xPlayer = tileNum[1];
   }
   //call attack with coordinates and update tile to reflect change
-  e.target.classList.add(players.player.attack(x, y));
+  let playerAttack = players.player.attack(xPlayer, yPlayer);
+  e.target.classList.add(playerAttack);
   e.target.removeEventListener("click", gameLoop);
   e.target.classList.remove("clickable-tile");
-  // e.target.classList.add("miss");
+  if (players.computer.gameboard.allShipsSunk()) {
+    //exit game loop and end game by calling end game function
+    console.log("game over");
+  }
+  if (playerAttack === "hit") {
+    //if player hit computer, player shoots again
+    console.log("hit");
+    return;
+  }
+
+  //if player misses then its the computers turn, with small delay
+  setTimeout(() => {
+    const [compAttackCoords, attackResult] = players.computer.attack();
+    //get correct tile from computers attack
+    let targetTile = document.querySelectorAll(
+      `div[tile-num="${compAttackCoords}"]`
+    )[0];
+    targetTile.classList.add(attackResult);
+    if (attackResult === "hit") {
+      computerAttack(); //DEFINE THIS SO IT IS CALLED AND THE CODE WIHTIN THE TIMEOUT IS RECURSIVE
+    }
+  }, 700);
 };
 
 const buildGameHMTL = () => {
