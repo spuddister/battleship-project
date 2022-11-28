@@ -36,7 +36,7 @@ function gameboardBuilder() {
   }
 
   const receiveAttack = (x, y) => {
-    if (seaLayout[x][y] !== undefined) {
+    if (seaLayout[x][y] !== undefined && seaLayout[x][y] !== "miss") {
       seaLayout[x][y].hit();
       seaLayout[x][y] = "hit";
       return "hit";

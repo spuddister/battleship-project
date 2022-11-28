@@ -40,6 +40,11 @@ header {
   position: relative;
 }
 
+.inactive {
+  border: solid rgb(163, 231, 252) 1px;
+  background-color: rgb(148, 210, 238);
+}
+
 .hit::before {
   background-color: rgb(165, 0, 0);
   border-radius: 50%;
