@@ -16,6 +16,7 @@ function gameboardBuilder() {
     [, , , , , , , , , ,],
     [, , , , , , , , , ,],
   ];
+  console.log(seaLayout[0][0]);
 
   //temporarily hard code assigning ship locations for codings sake
   const shipLocations = [];
@@ -55,6 +56,43 @@ function gameboardBuilder() {
 
   const checkSpace = (x, y) => {
     return seaLayout[x][y];
+  };
+
+  const shipPlacer = (shipArray) => {
+    shipArray.forEach((element) => {
+      let goodPlacement = false;
+      let direction = Math.random() < 0.5; //True for Horizontal, False for Vertical
+      let startX;
+      let startY;
+      //Test all ship coordinates to see if there is already a ship there, otherwise find new starting point and try again
+      while (!goodPlacement) {
+        let goodPlacementTest = true;
+        startX = Math.floor(Math.random() * 11);
+        startY = Math.floor(Math.random() * 11);
+        if (checkSpace(startX, startY) === undefined) {
+          //single square ships
+          //for all ships bigger than 1 square
+          if (element.length > 1) {
+            for (let i = 1; i < element.length; i++) {
+              //If Horizontal
+              if (direction) {
+                //if space is not empty then bad ship placement
+                if (checkSpace(startX + 1, startY) !== undefined) {
+                  goodPlacementTest = false;
+                }
+                //Else Veritcal
+              } else {
+                //if space is not empty then bad ship placement
+                if (checkSpace(startX, startY + 1) !== undefined) {
+                  goodPlacementTest = false;
+                }
+              }
+            }
+          }
+        }
+        goodPlacement = goodPlacementTest;
+      }
+    });
   };
 
   return {

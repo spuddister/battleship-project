@@ -1,16 +1,23 @@
-import { doc } from "prettier";
 import "./style.css";
-
-//Game controller
-
 const playerBuilder = require("./player");
+
+/*
+  Start game
+  1. Ship placement function
+    - possibly drag and drop
+  2. Confirmation button
+  End game
+  1. Reset button
+  2. Winner banner
+*/
 
 let players;
 let playerTurn = true;
 let playerTiles = [];
 let compTiles = [];
 
-//Initial HMTL Framework
+//<Initial HMTL Framework> -----------------------
+
 const mainDiv = document.createElement("div");
 mainDiv.setAttribute("id", "main");
 const headerDiv = document.createElement("header");
@@ -34,6 +41,8 @@ startBtnDiv.appendChild(startBtn);
 mainDiv.appendChild(startBtnDiv);
 mainDiv.appendChild(boardsDiv);
 document.body.appendChild(mainDiv);
+
+//<Initial HMTL Framework ----------------------/>
 
 const buildGameHMTL = () => {
   const playerBoardDiv = document.createElement("div");
