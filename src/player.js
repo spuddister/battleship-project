@@ -17,14 +17,14 @@ const playerBuilder = () => {
   };
 
   const player = {
-    gameboard: gameboardBuilder(),
+    gameboard: gameboardBuilder("human"),
     turn: true,
     attack: (x, y) => {
       return computer.gameboard.receiveAttack(x, y);
     },
   };
   const computer = {
-    gameboard: gameboardBuilder(),
+    gameboard: gameboardBuilder("computer"),
     turn: false,
     attackList: [],
     attack: () => {
