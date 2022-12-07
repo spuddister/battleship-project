@@ -1,35 +1,29 @@
 const ship = require("./ship");
 
-function gameboardBuilder(playerType) {
+function gameboardBuilder() {
   const defaultShipLengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
   let playerShips = [];
 
-  let seaLayout = [
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-    [, , , , , , , , , ,],
-  ];
+  let seaLayout;
 
-  //temporarily hard code assigning ship locations for codings sake
-  // const shipLocations = [];
-  // for (let i = 0; i < 10; i++) {
-  //   shipLocations[i] = [
-  //     [i, 0],
-  //     [i, defaultShipLengths[i] - 1],
-  //   ];
-  // }
   const checkSpace = (x, y) => {
     return seaLayout[x][y] === undefined ? undefined : false;
   };
 
-  const shipPlacer = (defaultShipLengths) => {
+  const shipBuilder = () => {
+    playerShips = [];
+    seaLayout = [
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+      [, , , , , , , , , ,],
+    ];
     defaultShipLengths.forEach((shipLength) => {
       let goodPlacement = false;
       let direction = Math.random() < 0.5; //True for Horizontal, False for Vertical
@@ -85,8 +79,6 @@ function gameboardBuilder(playerType) {
     });
   };
 
-  shipPlacer(defaultShipLengths);
-
   const receiveAttack = (x, y) => {
     if (seaLayout[x][y] !== undefined && seaLayout[x][y] !== "miss") {
       seaLayout[x][y].hit();
@@ -105,14 +97,15 @@ function gameboardBuilder(playerType) {
     return true;
   };
 
+  shipBuilder();
+
   return {
     playerShips,
     receiveAttack,
     allShipsSunk,
     checkSpace,
+    shipBuilder,
   };
 }
 
 module.exports = gameboardBuilder;
-
-//hit miss ship empty

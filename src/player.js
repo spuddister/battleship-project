@@ -2,7 +2,7 @@ const gameboardBuilder = require("./gameboard");
 
 const playerBuilder = () => {
   const computerAttackLogic = () => {
-    //replace this with something less resource consuming later if time
+    //to be replaced later, if time allows
     let xCoord;
     let yCoord;
     do {
@@ -17,14 +17,17 @@ const playerBuilder = () => {
   };
 
   const player = {
-    gameboard: gameboardBuilder("human"),
+    gameboard: gameboardBuilder(),
     turn: true,
     attack: (x, y) => {
       return computer.gameboard.receiveAttack(x, y);
     },
+    get newShips() {
+      this.gameboard = gameboardBuilder();
+    },
   };
   const computer = {
-    gameboard: gameboardBuilder("computer"),
+    gameboard: gameboardBuilder(),
     turn: false,
     attackList: [],
     attack: () => {

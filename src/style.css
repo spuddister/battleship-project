@@ -67,6 +67,17 @@ header {
   content: "";
 }
 
+.ship::before {
+  background-color: rgb(92, 92, 92);
+  border-radius: 50%;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
+  content: "";
+}
+
 .player-tile {
 }
 

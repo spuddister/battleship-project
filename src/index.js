@@ -1,3 +1,4 @@
+import ship from "./ship";
 import "./style.css";
 const playerBuilder = require("./player");
 
@@ -5,14 +6,14 @@ const playerBuilder = require("./player");
   Start game
   1. Ship placement function
     - possibly drag and drop
-  2. Confirmation button
+  2. Randomize ship button
   End game
   1. Reset button
   2. Winner banner
 */
 
-let players;
-let playerTurn = true;
+const players = playerBuilder();
+let playerTurn = false;
 let playerTiles = [];
 let compTiles = [];
 
@@ -29,72 +30,63 @@ startBtnDiv.classList.add("start-btn-wrapper");
 const startBtn = document.createElement("button");
 startBtn.setAttribute("id", "start-btn");
 startBtn.textContent = "Start Battle";
+
+const randomBtnDiv = document.createElement("div");
+randomBtnDiv.classList.add("random-btn-wrapper");
+const randomBtn = document.createElement("button");
+randomBtn.setAttribute("id", "random-btn");
+randomBtn.textContent = "Randomize";
+
+const textBox = document.createElement("p");
+textBox.classList.add("text-box");
+textBox.textContent =
+  "Click Start Battle when you are happy with your ship configuration";
+
+const playerBoardDiv = document.createElement("div");
+playerBoardDiv.classList.add("board");
+const compBoardDiv = document.createElement("div");
+compBoardDiv.classList.add("board");
+
+for (let i = 0; i < 100; i++) {
+  playerTiles[i] = document.createElement("div");
+  compTiles[i] = document.createElement("div");
+  playerTiles[i].setAttribute("tile-num", i);
+  compTiles[i].setAttribute("tile-num", i);
+  playerTiles[i].classList.add("tile");
+  compTiles[i].classList.add("tile");
+  compTiles[i].classList.add("inactive");
+  //These event listeners on each tile drive the progression of the game, each time one is clicked, the program moves forward until user input is required again
+  compTiles[i].addEventListener("click", tileClickEvent);
+  playerBoardDiv.appendChild(playerTiles[i]);
+  compBoardDiv.appendChild(compTiles[i]);
+}
+
+boardsDiv.appendChild(playerBoardDiv);
+boardsDiv.appendChild(compBoardDiv);
+
 startBtn.addEventListener("click", () => {
   startBtn.classList.add("start-hidden");
-  buildGameHMTL();
-  players = playerBuilder();
   startBtn.disabled = true;
+  playerTurn = true;
+});
+randomBtn.addEventListener("click", () => {
+  tileClassRemover(playerTiles, "ship");
+  players.player.newShips;
+  refreshPlayerShips();
 });
 
 mainDiv.appendChild(headerDiv);
 startBtnDiv.appendChild(startBtn);
 mainDiv.appendChild(startBtnDiv);
+mainDiv.appendChild(textBox);
 mainDiv.appendChild(boardsDiv);
+randomBtnDiv.appendChild(randomBtn);
+mainDiv.appendChild(randomBtnDiv);
 document.body.appendChild(mainDiv);
 
 //<Initial HMTL Framework ----------------------/>
 
-const buildGameHMTL = () => {
-  const playerBoardDiv = document.createElement("div");
-  playerBoardDiv.classList.add("board");
-  const compBoardDiv = document.createElement("div");
-  compBoardDiv.classList.add("board");
-
-  let i = 0;
-
-  while (i < 100) {
-    playerTiles[i] = document.createElement("div");
-    compTiles[i] = document.createElement("div");
-    playerTiles[i].setAttribute("tile-num", i);
-    compTiles[i].setAttribute("tile-num", i);
-    playerTiles[i].classList.add("tile");
-    compTiles[i].classList.add("tile");
-    playerTiles[i].classList.add("player-tile", "inactive");
-    compTiles[i].classList.add("clickable-tile");
-    //These event listeners on each tile drive the progression of the game, each time one is clicked, the program moves forward until user input is required again
-    compTiles[i].addEventListener("click", tileClickEvent);
-    playerBoardDiv.appendChild(playerTiles[i]);
-    compBoardDiv.appendChild(compTiles[i]);
-    i++;
-  }
-
-  boardsDiv.appendChild(playerBoardDiv);
-  boardsDiv.appendChild(compBoardDiv);
-};
-
-const computerAttack = () => {
-  const [compAttackCoords, attackResult] = players.computer.attack();
-  //get correct tile from computers attack
-  let targetTile = document.querySelectorAll(
-    `div[tile-num="${compAttackCoords}"]`
-  )[0];
-  targetTile.classList.add(attackResult);
-  if (attackResult === "hit") {
-    if (players.player.gameboard.allShipsSunk()) {
-      endGame();
-    }
-    setTimeout(() => {
-      computerAttack();
-    }, 900);
-  } else {
-    compTiles.forEach((tile) => {
-      tile.classList.remove("inactive");
-    });
-    playerTiles.forEach((tile) => {
-      tile.classList.add("inactive");
-    });
-  }
-};
+refreshPlayerShips();
 
 const gameLoop = (e) => {
   //event listener on tiles push game into next step, checks if computer ships are all sunk and then calls computer to make a turn and then checks if players ships are sunk. player clicks new tile and process continues
@@ -148,6 +140,58 @@ const endGame = () => {
   console.log("game over");
 };
 
+function computerAttack() {
+  const [compAttackCoords, attackResult] = players.computer.attack();
+  //get correct tile from computers attack
+  let targetTile = document.querySelectorAll(
+    `div[tile-num="${compAttackCoords}"]`
+  )[0];
+  targetTile.classList.add(attackResult);
+  targetTile.classList.remove("ship");
+  if (attackResult === "hit") {
+    if (players.player.gameboard.allShipsSunk()) {
+      endGame();
+    }
+    setTimeout(() => {
+      computerAttack();
+    }, 900);
+  } else {
+    compTiles.forEach((tile) => {
+      tile.classList.remove("inactive");
+    });
+    playerTiles.forEach((tile) => {
+      tile.classList.add("inactive");
+    });
+  }
+}
+
 function tileClickEvent(e) {
   if (playerTurn) gameLoop(e);
+}
+
+function shipTileUpdater(shipToUpdate) {
+  for (let i = 0; i < shipToUpdate.coordinates.length; i++) {
+    let playerShipCoordinates = shipToUpdate.coordinates[i];
+    let x = playerShipCoordinates[0];
+    let y = playerShipCoordinates[1];
+    let tileNum;
+    if (x === 0) {
+      tileNum = y.toString();
+    } else {
+      tileNum = x.toString() + y.toString();
+    }
+    document.querySelector(`div[tile-num="${tileNum}"]`).classList.add("ship");
+  }
+}
+
+function refreshPlayerShips() {
+  players.player.gameboard.playerShips.forEach((playerShip) => {
+    shipTileUpdater(playerShip);
+  });
+}
+
+function tileClassRemover(tiles, classString) {
+  for (let index = 0; index < tiles.length; index++) {
+    tiles[index].classList.remove(classString);
+  }
 }
