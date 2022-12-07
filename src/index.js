@@ -55,6 +55,7 @@ for (let i = 0; i < 100; i++) {
   playerTiles[i].classList.add("tile");
   compTiles[i].classList.add("tile");
   compTiles[i].classList.add("inactive");
+  compTiles[i].classList.add("clickable-tile");
   //These event listeners on each tile drive the progression of the game, each time one is clicked, the program moves forward until user input is required again
   compTiles[i].addEventListener("click", tileClickEvent);
   playerBoardDiv.appendChild(playerTiles[i]);
@@ -68,9 +69,17 @@ startBtn.addEventListener("click", () => {
   startBtn.classList.add("start-hidden");
   startBtn.disabled = true;
   playerTurn = true;
+  randomBtn.disabled = true;
 });
 randomBtn.addEventListener("click", () => {
   tileClassRemover(playerTiles, "ship");
+  tileClassRemover(playerTiles, "ship-single-tile");
+  tileClassRemover(playerTiles, "ship-start-horizontal");
+  tileClassRemover(playerTiles, "ship-middle-horizontal");
+  tileClassRemover(playerTiles, "ship-end-horizontal");
+  tileClassRemover(playerTiles, "ship-start-vertical");
+  tileClassRemover(playerTiles, "ship-middle-vertical");
+  tileClassRemover(playerTiles, "ship-end-vertical");
   players.player.newShips;
   refreshPlayerShips();
 });
@@ -108,7 +117,7 @@ const gameLoop = (e) => {
   e.target.removeEventListener("click", tileClickEvent);
   e.target.classList.remove("clickable-tile");
   if (players.computer.gameboard.allShipsSunk()) {
-    endGame();
+    endGame(); //player wins
   }
   if (playerAttack === "hit") {
     //if player hit computer, player shoots again
@@ -150,7 +159,7 @@ function computerAttack() {
   targetTile.classList.remove("ship");
   if (attackResult === "hit") {
     if (players.player.gameboard.allShipsSunk()) {
-      endGame();
+      endGame(); //computer wins
     }
     setTimeout(() => {
       computerAttack();
@@ -180,7 +189,31 @@ function shipTileUpdater(shipToUpdate) {
     } else {
       tileNum = x.toString() + y.toString();
     }
-    document.querySelector(`div[tile-num="${tileNum}"]`).classList.add("ship");
+
+    let tile = document.querySelector(`div[tile-num="${tileNum}"]`);
+    tile.classList.add("ship");
+
+    if (shipToUpdate.coordinates.length === 1) {
+      tile.classList.add("ship-single-tile");
+    } else if (shipToUpdate.isVertical && i === 0) {
+      tile.classList.add("ship-start-vertical");
+    } else if (
+      shipToUpdate.isVertical &&
+      i === shipToUpdate.coordinates.length - 1
+    ) {
+      tile.classList.add("ship-end-vertical");
+    } else if (shipToUpdate.isVertical) {
+      tile.classList.add("ship-middle-vertical");
+    } else if (!shipToUpdate.isVertical && i === 0) {
+      tile.classList.add("ship-start-horizontal");
+    } else if (
+      !shipToUpdate.isVertical &&
+      i === shipToUpdate.coordinates.length - 1
+    ) {
+      tile.classList.add("ship-end-horizontal");
+    } else if (!shipToUpdate.isVertical) {
+      tile.classList.add("ship-middle-horizontal");
+    }
   }
 }
 
