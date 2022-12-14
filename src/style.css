@@ -27,8 +27,9 @@ header {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  padding: 10px;
+  margin: 20px;
   background-color: rgb(149, 222, 255);
+  border: 3px solid #676767;
 }
 
 .tile {
@@ -44,8 +45,12 @@ header {
 }
 
 .inactive {
-  border: solid rgb(163, 231, 252) 1px;
-  background-color: rgb(148, 210, 238);
+  border: solid rgb(179, 207, 216) 1px;
+  background-color: rgb(122, 173, 197);
+}
+
+.inactive-board {
+  background-color: rgb(122, 173, 197);
 }
 
 .hit::before {
@@ -83,7 +88,6 @@ header {
 
 .ship-single-tile {
   background-color: var(--ship-colour);
-  /* border: 1px solid black; */
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   border-top-right-radius: 15%;
@@ -92,9 +96,6 @@ header {
 
 .ship-start-horizontal {
   background-color: var(--ship-colour);
-  /* border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black; */
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   border-right: 1px var(--ship-colour) solid;
@@ -102,17 +103,12 @@ header {
 
 .ship-middle-horizontal {
   background-color: var(--ship-colour);
-  /* border-top: 1px solid black;
-  border-bottom: 1px solid black; */
   border-left: 1px var(--ship-colour) solid;
   border-right: 1px var(--ship-colour) solid;
 }
 
 .ship-end-horizontal {
   background-color: var(--ship-colour);
-  /* border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black; */
   border-top-right-radius: 15%;
   border-bottom-right-radius: 15%;
   border-left: 1px var(--ship-colour) solid;
@@ -120,9 +116,6 @@ header {
 
 .ship-start-vertical {
   background-color: var(--ship-colour);
-  /* border-top: 1px solid black;
-  border-right: 1px solid black;
-  border-left: 1px solid black; */
   border-top-right-radius: 50%;
   border-top-left-radius: 50%;
   border-bottom: 1px var(--ship-colour) solid;
@@ -130,23 +123,15 @@ header {
 
 .ship-middle-vertical {
   background-color: var(--ship-colour);
-  /* border-right: 1px solid black;
-  border-left: 1px solid black; */
   border-top: 1px var(--ship-colour) solid;
   border-bottom: 1px var(--ship-colour) solid;
 }
 
 .ship-end-vertical {
   background-color: var(--ship-colour);
-  /* border-right: 1px solid black;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black; */
   border-bottom-left-radius: 15%;
   border-bottom-right-radius: 15%;
   border-top: 1px var(--ship-colour) solid;
-}
-
-.player-tile {
 }
 
 .clickable-tile {
@@ -154,7 +139,7 @@ header {
 }
 
 .clickable-tile:hover {
-  background-color: rgb(148, 210, 238);
+  background-color: rgb(122, 173, 197);
 }
 
 .start-btn-wrapper {
@@ -167,4 +152,8 @@ header {
 .start-hidden {
   /* opacity: 0; */
   background-color: blue;
+}
+
+.text-box {
+  color: orange;
 }

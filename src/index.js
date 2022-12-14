@@ -44,8 +44,10 @@ textBox.textContent =
 
 const playerBoardDiv = document.createElement("div");
 playerBoardDiv.classList.add("board");
+// playerBoardDiv.classList.add("board");
 const compBoardDiv = document.createElement("div");
 compBoardDiv.classList.add("board");
+// compBoardDiv.classList.add("board");
 
 for (let i = 0; i < 100; i++) {
   playerTiles[i] = document.createElement("div");
@@ -70,6 +72,9 @@ startBtn.addEventListener("click", () => {
   startBtn.disabled = true;
   playerTurn = true;
   randomBtn.disabled = true;
+  tileClassRemover(compTiles, "inactive");
+  tileClassAdder(playerTiles, "inactive");
+  playerBoardDiv.classList.add("inactive-board");
 });
 randomBtn.addEventListener("click", () => {
   tileClassRemover(playerTiles, "ship");
@@ -124,17 +129,20 @@ const gameLoop = (e) => {
     return;
   }
   playerTurn = false;
-  //Start of computers turn, with small delay
+
   compTiles.forEach((tile) => {
     tile.classList.add("inactive");
   });
   playerTiles.forEach((tile) => {
     tile.classList.remove("inactive");
   });
+  playerBoardDiv.classList.remove("inactive-board");
+
+  //Start of computers turn, with small delay
   setTimeout(() => {
     computerAttack();
     playerTurn = true;
-  }, 700);
+  }, 500);
 };
 
 const endGame = () => {
@@ -163,14 +171,11 @@ function computerAttack() {
     }
     setTimeout(() => {
       computerAttack();
-    }, 900);
+    }, 700);
   } else {
-    compTiles.forEach((tile) => {
-      tile.classList.remove("inactive");
-    });
-    playerTiles.forEach((tile) => {
-      tile.classList.add("inactive");
-    });
+    tileClassRemover(compTiles, "inactive");
+    tileClassAdder(playerTiles, "inactive");
+    playerBoardDiv.classList.add("inactive-board");
   }
 }
 
@@ -226,5 +231,27 @@ function refreshPlayerShips() {
 function tileClassRemover(tiles, classString) {
   for (let index = 0; index < tiles.length; index++) {
     tiles[index].classList.remove(classString);
+  }
+}
+
+function tileClassAdder(tiles, classString) {
+  for (let index = 0; index < tiles.length; index++) {
+    tiles[index].classList.add(classString);
+  }
+}
+
+function textBoxUpdater(command) {
+  if (command === "turn") {
+    if (playerTurn) {
+      textBox.textContent = "It's your turn";
+    } else {
+      textBox.textContent = "It's the computer's turn";
+    }
+  } else if (command === "gameover") {
+    if (playerTurn) {
+      textBox.textContent = "You won! Nice shooting.";
+    } else {
+      textBox.textContent = "You lost. Better luck next time.";
+    }
   }
 }
