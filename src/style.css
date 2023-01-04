@@ -92,6 +92,10 @@ header {
   content: "";
 }
 
+.sunk::before {
+  box-shadow: 0 0 4px 2px black;
+}
+
 .miss::before {
   background-color: rgb(255, 255, 255);
   border-radius: 50%;

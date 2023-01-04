@@ -80,8 +80,13 @@ function gameboardBuilder() {
   };
 
   const receiveAttack = (x, y) => {
-    if (seaLayout[x][y] !== undefined && seaLayout[x][y] !== "miss") {
+    if (typeof seaLayout[x][y] === "object") {
       seaLayout[x][y].hit();
+      if (seaLayout[x][y].isSunk()) {
+        let temp = seaLayout[x][y];
+        seaLayout[x][y] = "hit";
+        return temp;
+      }
       seaLayout[x][y] = "hit";
       return "hit";
     } else {

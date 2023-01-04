@@ -67,6 +67,7 @@ startBtn.addEventListener("click", () => {
   tileClassRemover(compTiles, "inactive");
   tileClassAdder(playerTiles, "inactive");
   playerBoardDiv.classList.add("inactive-board");
+  textBoxUpdater("turn");
 });
 randomBtn.addEventListener("click", () => {
   tileClassRemover(playerTiles, "ship");
@@ -108,16 +109,38 @@ const gameLoop = (e) => {
     pAttackY = tileNum[1];
   }
   //call attack with coordinates and update tile to reflect change
-  let playerAttack = players.player.attack(pAttackX, pAttackY);
-  e.target.classList.add(playerAttack);
+  let playerAttackResult = players.player.attack(pAttackX, pAttackY);
+
   e.target.removeEventListener("click", tileClickEvent);
   e.target.classList.remove("clickable-tile");
-  if (players.computer.gameboard.allShipsSunk()) {
-    endGame(); //player wins
-  }
-  if (playerAttack === "hit") {
-    //if player hit computer, player shoots again
+
+  if (typeof playerAttackResult === "object") {
+    e.target.classList.add("hit");
+    if (playerAttackResult.isSunk()) {
+      //apply effects to sunken computer ships
+      let targetTile;
+      playerAttackResult.coordinates.forEach((coord) => {
+        if (coord[0] === 0) {
+          targetTile = document.querySelectorAll(
+            `div[tile-num="${coord[1]}"]`
+          )[1];
+        } else {
+          targetTile = document.querySelectorAll(
+            `div[tile-num="${coord[0]}${coord[1]}"]`
+          )[1];
+        }
+        targetTile.classList.add("sunk");
+      });
+    }
+  } else if (playerAttackResult === "hit") {
+    e.target.classList.add("hit");
+    //if player hit computer, check if game over, otherwise player shoots again
+    if (players.computer.gameboard.allShipsSunk()) {
+      endGame(); //player wins
+    }
     return;
+  } else {
+    e.target.classList.add("miss");
   }
 
   //setup for computer's turn
@@ -146,12 +169,15 @@ const endGame = () => {
   playerTiles.forEach((tile) => {
     tile.classList.add("inactive");
   });
-  console.log("game over");
   textBoxUpdater("gameover");
 };
 
 function computerAttack() {
-  const [compAttackCoords, attackResult] = players.computer.attack();
+  let [compAttackCoords, attackResult] = players.computer.attack();
+  if (typeof attackResult === "object") {
+    //convert ship object to string 'hit' for simplification
+    attackResult = "hit";
+  }
   //get correct tile from computers attack
   let targetTile = document.querySelectorAll(
     `div[tile-num="${compAttackCoords}"]`
