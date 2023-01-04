@@ -2,16 +2,6 @@ import ship from "./ship";
 import "./style.css";
 const playerBuilder = require("./player");
 
-/*
-  Start game
-  1. Ship placement function
-    - possibly drag and drop
-  2. Randomize ship button
-  End game
-  1. Reset button
-  2. Winner banner
-*/
-
 const players = playerBuilder();
 let playerTurn = false;
 let playerTiles = [];
@@ -22,20 +12,24 @@ let compTiles = [];
 const mainDiv = document.createElement("div");
 mainDiv.setAttribute("id", "main");
 const headerDiv = document.createElement("header");
+const headerText = document.createElement("div");
+headerText.classList.add("title");
+headerText.innerText = "BATTLESHIP";
+headerDiv.appendChild(headerText);
 const boardsDiv = document.createElement("div");
 boardsDiv.classList.add("board-wrapper");
 
-const startBtnDiv = document.createElement("div");
-startBtnDiv.classList.add("start-btn-wrapper");
+const btnDiv = document.createElement("div");
+btnDiv.classList.add("btn-wrapper");
 const startBtn = document.createElement("button");
-startBtn.setAttribute("id", "start-btn");
+startBtn.classList.add("start-btn");
 startBtn.textContent = "Start Battle";
-
-const randomBtnDiv = document.createElement("div");
-randomBtnDiv.classList.add("random-btn-wrapper");
 const randomBtn = document.createElement("button");
-randomBtn.setAttribute("id", "random-btn");
+randomBtn.classList.add("random-btn");
 randomBtn.textContent = "Randomize";
+const resetBtn = document.createElement("button");
+resetBtn.classList.add("reset-btn");
+resetBtn.textContent = "Play Again";
 
 const textBox = document.createElement("p");
 textBox.classList.add("text-box");
@@ -44,10 +38,8 @@ textBox.textContent =
 
 const playerBoardDiv = document.createElement("div");
 playerBoardDiv.classList.add("board");
-// playerBoardDiv.classList.add("board");
 const compBoardDiv = document.createElement("div");
 compBoardDiv.classList.add("board");
-// compBoardDiv.classList.add("board");
 
 for (let i = 0; i < 100; i++) {
   playerTiles[i] = document.createElement("div");
@@ -90,15 +82,14 @@ randomBtn.addEventListener("click", () => {
 });
 
 mainDiv.appendChild(headerDiv);
-startBtnDiv.appendChild(startBtn);
-mainDiv.appendChild(startBtnDiv);
 mainDiv.appendChild(textBox);
 mainDiv.appendChild(boardsDiv);
-randomBtnDiv.appendChild(randomBtn);
-mainDiv.appendChild(randomBtnDiv);
+btnDiv.appendChild(randomBtn);
+btnDiv.appendChild(startBtn);
+mainDiv.appendChild(btnDiv);
 document.body.appendChild(mainDiv);
 
-//<Initial HMTL Framework ----------------------/>
+//<Initial HMTL Framework/> ----------------------
 
 refreshPlayerShips();
 
@@ -128,8 +119,10 @@ const gameLoop = (e) => {
     //if player hit computer, player shoots again
     return;
   }
-  playerTurn = false;
 
+  //setup for computer's turn
+  playerTurn = false;
+  textBoxUpdater("turn");
   compTiles.forEach((tile) => {
     tile.classList.add("inactive");
   });
@@ -141,7 +134,6 @@ const gameLoop = (e) => {
   //Start of computers turn, with small delay
   setTimeout(() => {
     computerAttack();
-    playerTurn = true;
   }, 500);
 };
 
@@ -155,6 +147,7 @@ const endGame = () => {
     tile.classList.add("inactive");
   });
   console.log("game over");
+  textBoxUpdater("gameover");
 };
 
 function computerAttack() {
@@ -176,6 +169,8 @@ function computerAttack() {
     tileClassRemover(compTiles, "inactive");
     tileClassAdder(playerTiles, "inactive");
     playerBoardDiv.classList.add("inactive-board");
+    playerTurn = true;
+    textBoxUpdater("turn");
   }
 }
 
@@ -244,14 +239,20 @@ function textBoxUpdater(command) {
   if (command === "turn") {
     if (playerTurn) {
       textBox.textContent = "It's your turn";
+      textBox.classList.add("text-box-player");
+      textBox.classList.remove("text-box-computer");
     } else {
       textBox.textContent = "It's the computer's turn";
+      textBox.classList.add("text-box-computer");
+      textBox.classList.remove("text-box-player");
     }
   } else if (command === "gameover") {
     if (playerTurn) {
       textBox.textContent = "You won! Nice shooting.";
+      textBox.classList.add("text-box-end-win");
     } else {
       textBox.textContent = "You lost. Better luck next time.";
+      textBox.classList.add("text-box-end-lost");
     }
   }
 }
