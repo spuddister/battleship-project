@@ -28,8 +28,8 @@ const randomBtn = document.createElement("button");
 randomBtn.classList.add("random-btn");
 randomBtn.textContent = "Randomize";
 const resetBtn = document.createElement("button");
-resetBtn.classList.add("reset-btn");
-resetBtn.textContent = "Play Again";
+resetBtn.classList.add("hidden");
+resetBtn.textContent = "Reset";
 
 const textBox = document.createElement("p");
 textBox.classList.add("text-box");
@@ -60,7 +60,9 @@ boardsDiv.appendChild(playerBoardDiv);
 boardsDiv.appendChild(compBoardDiv);
 
 startBtn.addEventListener("click", () => {
-  startBtn.classList.add("start-hidden");
+  startBtn.classList.add("hidden");
+  randomBtn.classList.add("hidden");
+  resetBtn.classList.remove("hidden");
   startBtn.disabled = true;
   playerTurn = true;
   randomBtn.disabled = true;
@@ -81,12 +83,16 @@ randomBtn.addEventListener("click", () => {
   players.player.newShips;
   refreshPlayerShips();
 });
+resetBtn.addEventListener("click", () => {
+  location.reload();
+});
 
 mainDiv.appendChild(headerDiv);
 mainDiv.appendChild(textBox);
 mainDiv.appendChild(boardsDiv);
 btnDiv.appendChild(randomBtn);
 btnDiv.appendChild(startBtn);
+btnDiv.appendChild(resetBtn);
 mainDiv.appendChild(btnDiv);
 document.body.appendChild(mainDiv);
 
@@ -95,7 +101,7 @@ document.body.appendChild(mainDiv);
 refreshPlayerShips();
 
 const gameLoop = (e) => {
-  //event listener on tiles push game into next step, checks if computer ships are all sunk and then calls computer to make a turn and then checks if players ships are sunk. player clicks new tile and process continues
+  //event listener on tiles progress game through steps
 
   //Get coordinates of the tile clicked from the tile-number, tile#96 has coordinates [6,9]
   let tileNum = e.target.getAttribute("tile-num");
@@ -115,26 +121,31 @@ const gameLoop = (e) => {
   e.target.classList.remove("clickable-tile");
 
   if (typeof playerAttackResult === "object") {
+    //playerAttackResult is returned as the ship object when a ship is sunk
+
     e.target.classList.add("hit");
-    if (playerAttackResult.isSunk()) {
-      //apply effects to sunken computer ships
-      let targetTile;
-      playerAttackResult.coordinates.forEach((coord) => {
-        if (coord[0] === 0) {
-          targetTile = document.querySelectorAll(
-            `div[tile-num="${coord[1]}"]`
-          )[1];
-        } else {
-          targetTile = document.querySelectorAll(
-            `div[tile-num="${coord[0]}${coord[1]}"]`
-          )[1];
-        }
-        targetTile.classList.add("sunk");
-      });
+    //apply effects to sunken computer ship tiles
+    let targetTile;
+    playerAttackResult.coordinates.forEach((coord) => {
+      if (coord[0] === 0) {
+        targetTile = document.querySelectorAll(
+          `div[tile-num="${coord[1]}"]`
+        )[1];
+      } else {
+        targetTile = document.querySelectorAll(
+          `div[tile-num="${coord[0]}${coord[1]}"]`
+        )[1];
+      }
+      targetTile.classList.add("sunk");
+    });
+
+    if (players.computer.gameboard.allShipsSunk()) {
+      endGame();
     }
+    return;
   } else if (playerAttackResult === "hit") {
     e.target.classList.add("hit");
-    //if player hit computer, check if game over, otherwise player shoots again
+    //if player hit computer, check if game over, otherwise return so player shoots again
     if (players.computer.gameboard.allShipsSunk()) {
       endGame(); //player wins
     }
@@ -160,7 +171,7 @@ const gameLoop = (e) => {
   }, 500);
 };
 
-const endGame = () => {
+function endGame() {
   compTiles.forEach((tile) => {
     tile.classList.add("inactive");
     tile.classList.remove("clickable-tile");
@@ -170,7 +181,7 @@ const endGame = () => {
     tile.classList.add("inactive");
   });
   textBoxUpdater("gameover");
-};
+}
 
 function computerAttack() {
   let [compAttackCoords, attackResult] = players.computer.attack();

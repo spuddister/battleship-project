@@ -25,15 +25,20 @@ header {
 .title {
   font-family: "Anton", sans-serif;
   font-size: 4em;
-  background-image: linear-gradient(90deg, white, blue 30%, white 50%);
+  background-image: linear-gradient(
+    90deg,
+    white,
+    rgb(71, 71, 126) 30%,
+    white 50%
+  );
   background-size: 300%;
   background-position-x: 100%;
-
+  background-repeat: repeat-x;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
-  animation: 2s ease-in-out 0.5s 1 wave-animation;
+  animation: 1.5s ease-in-out 0.5s 1 wave-animation;
 }
 
 @keyframes wave-animation {
@@ -41,7 +46,7 @@ header {
     background-position-x: 100%;
   }
   100% {
-    background-position-x: -80%;
+    background-position-x: -200%;
   }
 }
 
@@ -185,19 +190,12 @@ button {
   border-radius: none;
   background-color: black;
   color: white;
+  cursor: pointer;
 }
 
-.reset-button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: none;
-  background-color: black;
-  color: white;
-}
-
-.start-hidden {
-  /* opacity: 0; */
-  background-color: blue;
+.hidden {
+  opacity: 0;
+  display: none;
 }
 
 .text-box {
