@@ -7,6 +7,14 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-image: linear-gradient(
+    90deg,
+    rgb(0, 0, 0) 0%,
+    darkblue 20%,
+    rgb(0, 47, 255) 50%,
+    darkblue 80%,
+    black 100%
+  );
 }
 
 #main {
@@ -42,16 +50,16 @@ header {
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
-  animation: 1.5s ease-in-out 1 title-animation;
+  animation: 3s ease-in-out 1 title-animation;
   position: absolute;
 }
 
 @keyframes title-animation {
   0% {
-    left: -100%;
+    top: -100%;
   }
-  50% {
-    left: calc(50% - 135px);
+  80% {
+    top: calc(50% - 48px);
     background-position-x: 100%;
   }
   100% {
@@ -65,7 +73,7 @@ header {
   align-items: center;
   justify-content: center;
   padding: 1em;
-  background-color: #ffffff;
+  background-color: #9c9c9c;
   box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.575);
 }
 
@@ -84,7 +92,6 @@ header {
   display: flex;
   flex-wrap: wrap;
   padding: 1em;
-  background-color: #ffffff;
 }
 
 .board {
@@ -93,7 +100,7 @@ header {
   grid-template-rows: repeat(10, 1fr);
   margin: 1em;
   background-color: rgb(149, 222, 255);
-  border: 3px solid #676767;
+  border: 3px solid #474747;
 }
 
 .tile {
@@ -240,7 +247,7 @@ footer {
   justify-content: center;
   color: white;
   background-color: black;
-  padding: 0.5em;
+  padding: 0.25em;
 }
 
 .link {

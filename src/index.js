@@ -19,7 +19,7 @@ headerDiv.appendChild(headerText);
 
 const boardLabels = document.createElement("p");
 boardLabels.classList.add("board-labels");
-boardLabels.textContent = "Player vs Computer";
+boardLabels.textContent = "PLAYER -- vs -- COMPUTER";
 
 const card = document.createElement("div");
 card.classList.add("card");
@@ -283,7 +283,7 @@ function directionsTextUpdater(command) {
   if (command === "turn") {
     if (playerTurn) {
       directionsText.textContent = "It's your turn";
-      directionsText.style.color = "green";
+      directionsText.style.color = "darkgreen";
     } else {
       directionsText.textContent = "It's the computer's turn";
       directionsText.style.color = "black";
@@ -294,7 +294,7 @@ function directionsTextUpdater(command) {
       directionsText.style.color = "gold";
     } else {
       directionsText.textContent = "You LOSE. Better luck next time.";
-      directionsText.style.color = "red";
+      directionsText.style.color = "darkred";
     }
   }
 }
