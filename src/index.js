@@ -16,26 +16,19 @@ const headerText = document.createElement("div");
 headerText.classList.add("title");
 headerText.innerText = "BATTLESHIP";
 headerDiv.appendChild(headerText);
+
+const boardLabels = document.createElement("p");
+boardLabels.classList.add("board-labels");
+boardLabels.textContent = "Player vs Computer";
+
+const card = document.createElement("div");
+card.classList.add("card");
+const directionsText = document.createElement("p");
+directionsText.classList.add("text-box");
+directionsText.textContent =
+  "Click Start Battle when you are happy with your ship configuration";
 const boardsDiv = document.createElement("div");
 boardsDiv.classList.add("board-wrapper");
-
-const btnDiv = document.createElement("div");
-btnDiv.classList.add("btn-wrapper");
-const startBtn = document.createElement("button");
-startBtn.classList.add("start-btn");
-startBtn.textContent = "Start Battle";
-const randomBtn = document.createElement("button");
-randomBtn.classList.add("random-btn");
-randomBtn.textContent = "Randomize";
-const resetBtn = document.createElement("button");
-resetBtn.classList.add("hidden");
-resetBtn.textContent = "Reset";
-
-const textBox = document.createElement("p");
-textBox.classList.add("text-box");
-textBox.textContent =
-  "Click Start Battle when you are happy with your ship configuration";
-
 const playerBoardDiv = document.createElement("div");
 playerBoardDiv.classList.add("board");
 const compBoardDiv = document.createElement("div");
@@ -56,8 +49,22 @@ for (let i = 0; i < 100; i++) {
   compBoardDiv.appendChild(compTiles[i]);
 }
 
+card.appendChild(directionsText);
+card.appendChild(boardsDiv);
 boardsDiv.appendChild(playerBoardDiv);
 boardsDiv.appendChild(compBoardDiv);
+
+const btnDiv = document.createElement("div");
+btnDiv.classList.add("btn-wrapper");
+const startBtn = document.createElement("button");
+startBtn.classList.add("start-btn");
+startBtn.textContent = "START BATTLE";
+const randomBtn = document.createElement("button");
+randomBtn.classList.add("random-btn");
+randomBtn.textContent = "RANDOMIZE";
+const resetBtn = document.createElement("button");
+resetBtn.classList.add("hidden");
+resetBtn.textContent = "RESET";
 
 startBtn.addEventListener("click", () => {
   startBtn.classList.add("hidden");
@@ -69,7 +76,7 @@ startBtn.addEventListener("click", () => {
   tileClassRemover(compTiles, "inactive");
   tileClassAdder(playerTiles, "inactive");
   playerBoardDiv.classList.add("inactive-board");
-  textBoxUpdater("turn");
+  directionsTextUpdater("turn");
 });
 randomBtn.addEventListener("click", () => {
   tileClassRemover(playerTiles, "ship");
@@ -88,13 +95,13 @@ resetBtn.addEventListener("click", () => {
 });
 
 mainDiv.appendChild(headerDiv);
-mainDiv.appendChild(textBox);
-mainDiv.appendChild(boardsDiv);
+mainDiv.appendChild(boardLabels);
+mainDiv.appendChild(card);
 btnDiv.appendChild(randomBtn);
 btnDiv.appendChild(startBtn);
 btnDiv.appendChild(resetBtn);
 mainDiv.appendChild(btnDiv);
-document.body.appendChild(mainDiv);
+document.body.prepend(mainDiv);
 
 //<Initial HMTL Framework/> ----------------------
 
@@ -156,7 +163,7 @@ const gameLoop = (e) => {
 
   //setup for computer's turn
   playerTurn = false;
-  textBoxUpdater("turn");
+  directionsTextUpdater("turn");
   compTiles.forEach((tile) => {
     tile.classList.add("inactive");
   });
@@ -180,7 +187,7 @@ function endGame() {
   playerTiles.forEach((tile) => {
     tile.classList.add("inactive");
   });
-  textBoxUpdater("gameover");
+  directionsTextUpdater("gameover");
 }
 
 function computerAttack() {
@@ -207,7 +214,7 @@ function computerAttack() {
     tileClassAdder(playerTiles, "inactive");
     playerBoardDiv.classList.add("inactive-board");
     playerTurn = true;
-    textBoxUpdater("turn");
+    directionsTextUpdater("turn");
   }
 }
 
@@ -272,24 +279,22 @@ function tileClassAdder(tiles, classString) {
   }
 }
 
-function textBoxUpdater(command) {
+function directionsTextUpdater(command) {
   if (command === "turn") {
     if (playerTurn) {
-      textBox.textContent = "It's your turn";
-      textBox.classList.add("text-box-player");
-      textBox.classList.remove("text-box-computer");
+      directionsText.textContent = "It's your turn";
+      directionsText.style.color = "green";
     } else {
-      textBox.textContent = "It's the computer's turn";
-      textBox.classList.add("text-box-computer");
-      textBox.classList.remove("text-box-player");
+      directionsText.textContent = "It's the computer's turn";
+      directionsText.style.color = "black";
     }
   } else if (command === "gameover") {
     if (playerTurn) {
-      textBox.textContent = "You won! Nice shooting.";
-      textBox.classList.add("text-box-end-win");
+      directionsText.textContent = "You WON! Nice shooting.";
+      directionsText.style.color = "gold";
     } else {
-      textBox.textContent = "You lost. Better luck next time.";
-      textBox.classList.add("text-box-end-lost");
+      directionsText.textContent = "You LOSE. Better luck next time.";
+      directionsText.style.color = "red";
     }
   }
 }

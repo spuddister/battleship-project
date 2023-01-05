@@ -3,10 +3,13 @@ body {
   margin: 0;
   padding: 0;
   --ship-colour: rgb(235, 232, 232);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 #main {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,11 +18,12 @@ body {
 header {
   background-color: black;
   min-width: 100vw;
-  padding: 0.5em;
+  padding: 3em;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .title {
@@ -38,11 +42,16 @@ header {
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
-  animation: 1.5s ease-in-out 0.5s 1 wave-animation;
+  animation: 1.5s ease-in-out 1 title-animation;
+  position: absolute;
 }
 
-@keyframes wave-animation {
+@keyframes title-animation {
   0% {
+    left: -100%;
+  }
+  50% {
+    left: calc(50% - 135px);
     background-position-x: 100%;
   }
   100% {
@@ -50,17 +59,39 @@ header {
   }
 }
 
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+  background-color: #ffffff;
+  box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.575);
+}
+
+.board-labels {
+  color: black;
+  padding: 1em;
+  margin: 0;
+  font-weight: 900;
+}
+
+.text-box {
+  margin: 0;
+}
+
 .board-wrapper {
   display: flex;
   flex-wrap: wrap;
-  padding: 10px;
+  padding: 1em;
+  background-color: #ffffff;
 }
 
 .board {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  margin: 20px;
+  margin: 1em;
   background-color: rgb(149, 222, 255);
   border: 3px solid #676767;
 }
@@ -180,17 +211,22 @@ header {
 }
 
 .btn-wrapper {
-  padding: 10px;
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
-  padding: 10px 30px;
-  margin: 0 20px;
+  padding: 0.5em 1em;
+  width: 18em;
+  margin: 0.5em 1em;
   border: none;
   border-radius: none;
   background-color: black;
   color: white;
   cursor: pointer;
+  font-family: "Anton", sans-serif;
 }
 
 .hidden {
@@ -198,22 +234,16 @@ button {
   display: none;
 }
 
-.text-box {
-  color: black;
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: black;
+  padding: 0.5em;
 }
 
-.text-box-player {
-  color: green;
-}
-
-.text-box-computer {
-  color: black;
-}
-
-.text-box-end-win {
-  color: gold;
-}
-
-.text-box-end-lost {
-  color: red;
+.link {
+  text-decoration: none;
+  color: rgb(149, 222, 255);
 }
