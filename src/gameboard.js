@@ -1,7 +1,7 @@
 const ship = require("./ship");
 
 function gameboardBuilder() {
-  const defaultShipLengths = [4, 3, 3, 2, 2, 2, 1];
+  const defaultShipLengths = [5, 4, 3, 3, 2];
   let playerShips = [];
 
   let seaLayout;
