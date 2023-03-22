@@ -11,4 +11,6 @@ For this project from [The Odin Project](https://www.theodinproject.com/) curric
 #
 [See deployment here.](https://spuddister.github.io/battleship-project/)
 
-<a href="https://www.flaticon.com/free-icons/battleship" title="battleship icons">Battleship icons created by Freepik - Flaticon</a>
+#Icons Used
+
+<a href="https://www.flaticon.com/free-icons/battleship" title="battleship icons">Icons created by Freepik</a>
