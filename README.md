@@ -1,5 +1,4 @@
-# battleship-project
-# Knights Travails Project
+# Battleship Project
 
 For this project from [The Odin Project](https://www.theodinproject.com/) curriculum, I used Test Driven Development techniques to build a battleship game in which the user plays against a not-so-intelligent computer opponent (so don't lose!). A link to the game can be found below.
 
